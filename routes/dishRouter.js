@@ -107,7 +107,6 @@ dishRouter.route('/:dishId/comments')
             dish.comments = dish.comments.concat([req.body]);
             dish.save()
                 .then((dish) => {
-                    console.log('here');
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     res.json(dish);
@@ -128,7 +127,7 @@ dishRouter.route('/:dishId/comments')
     Dishes.findById(req.params.dishId)
     .then((dish) => {
         if (dish != null) {
-            for (var i = (dish.comments.length -1); i >= 0; i--) {
+            for (var i = (dish.comments.length - 1); i >= 0; i--) {
                 dish.comments.id(dish.comments[i]._id).remove();
             }
             dish.save()
