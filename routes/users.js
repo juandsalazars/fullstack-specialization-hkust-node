@@ -21,10 +21,26 @@ router.post('/signup', function(req, res, next) {
       res.json({ error: err});
     } 
     else {
-      passport.authenticate('local')(req, res, () => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json({ success: true, status: 'Registration Succesful!'});
+      if (req.body.firstname) {
+        user.firstname = req.body.firstname
+      }
+
+      if (req.body.lastname) {
+        user.lastname = req.body.lastname
+      }
+
+      user.save((err, user) => {
+        if (err) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({ error: err});
+          return;
+        }
+        passport.authenticate('local')(req, res, () => {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({ success: true, status: 'Registration Succesful!'});
+        });
       });
     }
   })
@@ -50,16 +66,6 @@ router.get('/logout', (req, res, next) => {
     err.status = 403;
     next(err);
   }
-});
-
-router.delete('/', (req, res, next) => {
-  User.remove({})
-  .then((resp) => {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.json(resp);
-  }, (err) => next(err))
-  .catch((err) => next(err));
 });
 
 module.exports = router;
