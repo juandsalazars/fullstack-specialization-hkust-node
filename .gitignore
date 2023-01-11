@@ -3,5 +3,3 @@ node_modules
 db.json
 
 sessions
-
-bin/private.key
