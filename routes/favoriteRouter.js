@@ -118,6 +118,7 @@ favoritesRouter.route('/')
 // Specific favorite dish route
 
 favoritesRouter.route('/:dishId')
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200)})
 .get(cors.cors, (req, res, next) => {
     Favorites.findOne({ user: req-user._id })
     .then((favorites) => {
